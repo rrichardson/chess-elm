@@ -1,20 +1,20 @@
 module Chess.Chess where
 
-import Chess.Util (..)
-import Chess.Color (Color)
-import Chess.Board (Board)
-import Chess.Game (Game(GameStart),gameBoard,gameColor,makeMove,gameMessage,isGameFinished,winner,validPromotionsMoves,showGameHist)
-import Chess.Field (Field,readField,field,isValid,showField)
-import Chess.Figure (Figure,showFigureUnicode,figure)
-import Chess.ComputerPlayer (generateMove)
-import String (cons,show,append)
-import Char (fromCode,toLower)
+import Chess.Util exposing (..)
+import Chess.Color exposing (Color)
+import Chess.Board exposing (Board)
+import Chess.Game exposing (Game(GameStart),gameBoard,gameColor,makeMove,gameMessage,isGameFinished,winner,validPromotionsMoves,showGameHist)
+import Chess.Field exposing (Field,readField,field,isValid,showField)
+import Chess.Figure exposing (Figure,showFigureUnicode,figure)
+import Chess.ComputerPlayer exposing (generateMove)
+import String exposing (cons,show,append)
+import Char exposing (fromCode,toLower)
 import Dict
 import Mouse
 import Time
 import Text
-import Graphics.Input (Input,input,clickable)
-import Maybe (maybe)
+import Graphics.Input exposing (Input,input,clickable)
+import Maybe exposing (maybe)
 
 -- board drawing
 

@@ -1,10 +1,9 @@
 module Chess.Field where
 
-import Char (fromCode,toCode,toLower)
-import String (show,cons,toList)
-import Chess.Color (firstRow,other)
+import Char exposing (fromCode,toCode,toLower)
+import String exposing (cons,toList)
+import Chess.Color exposing (firstRow,other)
 import Chess.Color
-type Color = Chess.Color.Color
 
 {-| The game of chess is played on a board with 64 fields.
 The board has the shape of a square with eight rows — from 1 to 8
@@ -14,7 +13,7 @@ It has members representing the column and the row —
 the field coordinates on the chess board.
 Valid fields have coordinates in the range between 1 and 8.
 -}
-type Field = { col : Int, row : Int }
+type alias Field = { col : Int, row : Int }
 
 {-| Construct a field -}
 field : Int -> Int -> Field
@@ -24,7 +23,7 @@ field c r = { col = c, row = r }
 a letter representing the column and a number representing the row.
 -}
 showField : Field -> String
-showField {col,row} = (toLower << fromCode) (64+col) `cons` show row
+showField {col,row} = (toLower << fromCode) (64+col) `cons` toString row
 
 readField : String -> Field
 readField f =
@@ -37,7 +36,7 @@ readField f =
 whether the given field belongs to the last row from
 the point of view of a player.
 -}
-isLastRow : Field -> Color -> Bool
+isLastRow : Field -> Chess.Color.Color -> Bool
 isLastRow {row} color = row == firstRow (other color)
 
 {-| Returns a boolean value indicating

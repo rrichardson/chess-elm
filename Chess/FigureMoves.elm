@@ -1,9 +1,9 @@
 module Chess.FigureMoves where
 
-import Chess.Color (..)
-import Chess.Figure (..)
-import Chess.Field (..)
-import Chess.Util (takeWhile)
+import Chess.Color exposing (..)
+import Chess.Figure exposing (..)
+import Chess.Field exposing (..)
+import Chess.Util exposing (takeWhile)
 
 {-| Sequences of relative figure positions for rook moves. -}
 rookMoves : [([Int],[Int])]

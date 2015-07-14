@@ -1,16 +1,15 @@
 module Chess.Figure where
 
-import String (cons)
-import Char (fromCode)
-import Chess.Color (..)
+import String exposing (cons)
+import Char exposing (fromCode)
+import Chess.Color exposing (..)
 import Chess.Color
-type Color = Chess.Color.Color
 
 {-| Represents chess figure types. -}
-data FigureType = King | Queen | Rook | Bishop | Knight | Pawn
+type FigureType = King | Queen | Rook | Bishop | Knight | Pawn
 
 {-| Represents a figure, which has a type and a color. -}
-type Figure = { figureType : FigureType, figureColor : Color }
+type alias Figure = { figureType : FigureType, figureColor : Color }
 
 {-| Construct a figure -}
 figure : FigureType -> Color -> Figure

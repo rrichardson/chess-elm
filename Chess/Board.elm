@@ -1,14 +1,15 @@
 module Chess.Board where
 
 import Dict
-import String
-import Chess.Color (..)
-import Chess.Figure (..)
-import Chess.Field (..)
-import Chess.Move (..)
-import Maybe (maybe)
+import String exposing (concat)
+import List exposing (map, reverse)
+import Chess.Color exposing (..)
+import Chess.Figure exposing (..)
+import Chess.Field exposing (..)
+import Chess.Move exposing (..)
+import Maybe exposing (withDefault)
 
-type Board = Dict.Dict String Figure
+type alias Board = Dict.Dict String Figure
 
 {-| The board state when the game starts. -}
 startingBoard : Board
@@ -52,9 +53,9 @@ showBoard board =
   let showFieldContent row col = case Dict.get (showField <| field col row) board of
                                    Just x -> showFigure x
                                    Nothing -> "."
-      showRow row = (String.show row) ++
+      showRow row = (toString row) ++
                     String.concat (map (showFieldContent row) [1..8]) ++
-                    (String.show row) ++ "\n"
+                    (toString row) ++ "\n"
   in
     " abcdefgh\n" ++ String.concat (map showRow <| reverse [1..8]) ++ " abcdefgh\n"
 
@@ -93,9 +94,9 @@ showFigure' figure =
 
 showMove : Move -> Board -> String
 showMove move board = case move of
-  RegularMove from to       -> concat [maybe " " showFigure' (getFigure board to), showField from, "-", showField to, " "]
-  PromotionMove from to fig -> concat [maybe " " showFigure' (getFigure board to), showField from, "-", showField to, showFigure fig]
-  EnPassantMove from to _   -> concat [maybe " " showFigure' (getFigure board to), showField from, "-", showField to, " "]
+  RegularMove from to       -> concat [withDefault " " (Maybe.map showFigure' (getFigure board to)), showField from, "-", showField to, " "]
+  PromotionMove from to fig -> concat [withDefault " " (Maybe.map showFigure' (getFigure board to)), showField from, "-", showField to, showFigure fig]
+  EnPassantMove from to _   -> concat [withDefault " " (Maybe.map showFigure' (getFigure board to)), showField from, "-", showField to, " "]
   CastlingMove _ {col} _ _  -> if col == 7 then "O-O    " else "O-O-O  "
 
 {-

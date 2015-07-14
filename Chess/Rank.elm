@@ -1,13 +1,13 @@
 module Chess.Rank where
 
 import Dict
-import Chess.Color (..)
-import Chess.Figure (..)
-import Chess.Field (..)
-import Chess.Move (..)
-import Chess.FigureMoves (..)
-import Chess.Game (..)
-import Chess.Util (..)
+import Chess.Color exposing (..)
+import Chess.Figure exposing (..)
+import Chess.Field exposing (..)
+import Chess.Move exposing (..)
+import Chess.FigureMoves exposing (..)
+import Chess.Game exposing (..)
+import Chess.Util exposing (..)
 import Chess.Color
 type Color = Chess.Color.Color
 

@@ -2,15 +2,15 @@ module Chess.Game ( Game(..), gameMoves, showGameHist, gameMessage, defendedDest
 
 import String
 import Dict
-import Maybe (isNothing)
-import Chess.Color (..)
-import Chess.Figure (..)
-import Chess.Field (..)
+import Maybe exposing (isNothing)
+import Chess.Color exposing (..)
+import Chess.Figure exposing (..)
+import Chess.Field exposing (..)
 import Chess.Move
-import Chess.Move (..)
-import Chess.FigureMoves (..)
-import Chess.Board (Board,startingBoard,updateBoard,showBoard,showMove)
-import Chess.Util (..)
+import Chess.Move exposing (..)
+import Chess.FigureMoves exposing (..)
+import Chess.Board exposing (Board,startingBoard,updateBoard,showBoard,showMove)
+import Chess.Util exposing (..)
 import Chess.Color
 type Color = Chess.Color.Color
 

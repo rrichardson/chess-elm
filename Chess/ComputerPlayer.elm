@@ -1,14 +1,14 @@
 module Chess.ComputerPlayer where
 
 import Dict
-import Chess.Color (..)
-import Chess.Figure (..)
-import Chess.Field (..)
-import Chess.Move (..)
-import Chess.FigureMoves (..)
-import Chess.Game (..)
-import Chess.Rank (..)
-import Chess.Util (..)
+import Chess.Color exposing (..)
+import Chess.Figure exposing (..)
+import Chess.Field exposing (..)
+import Chess.Move exposing (..)
+import Chess.FigureMoves exposing (..)
+import Chess.Game exposing (..)
+import Chess.Rank exposing (..)
+import Chess.Util exposing (..)
 
 {-| Returns a sequence of the best ranked moves.-}
 moves : Game -> [Game]

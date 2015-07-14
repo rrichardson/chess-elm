@@ -1,16 +1,16 @@
 module Chess.Move where
 
-import Chess.Field (..)
-import Chess.Figure (..)
-import String (concat)
+import Chess.Field exposing (..)
+import Chess.Figure exposing (..)
+import String exposing (concat)
 
-type From = Field
-type To = Field
-type Captured = Field
-type RookFrom = Field
-type RookTo = Field
+type alias From = Field
+type alias To = Field
+type alias Captured = Field
+type alias RookFrom = Field
+type alias RookTo = Field
 
-data Move = RegularMove From To
+type Move = RegularMove From To
           | PromotionMove From To Figure
           | EnPassantMove From To Captured
           | CastlingMove From To RookFrom RookTo
