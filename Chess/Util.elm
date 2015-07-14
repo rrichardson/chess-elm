@@ -26,11 +26,6 @@ find f lst = case (filter f lst) of
 elem : a -> List a -> Bool
 elem e lst = not << isEmpty <| filter (\x -> x == e) lst
 
-groupElements lst =
-  let group1 = foldl (\x (g::gs) -> if (head x == g) then (x::g)::gs else [x]::g::gs)
-  in case (reverse lst) of
-       [] -> []
-       x::xs -> group1 [[x]] xs
 
 {--
 

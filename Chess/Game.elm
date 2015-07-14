@@ -221,8 +221,7 @@ isGameFinished game =
          sort [ "k", "K" , "n" ],
          sort [ "k", "K" , "N" ],
          sort [ "k", "K" , "n" , "n" ],
-         sort [ "k", "K" , "N" , "N" ]] ||
-  (not << isEmpty << filter (\g -> length g >= 3) << groupElements << sort << map (showBoard << gameBoard) <| game :: gameHist game)
+         sort [ "k", "K" , "N" , "N" ]]
 
 {-| Returns 'Just' containing the color of the game winner or 'Nothing' if there is no winner. -}
 winner game =

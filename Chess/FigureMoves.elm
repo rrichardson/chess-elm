@@ -6,25 +6,25 @@ import Chess.Field exposing (..)
 import Chess.Util exposing (takeWhile)
 
 {-| Sequences of relative figure positions for rook moves. -}
-rookMoves : [([Int],[Int])]
+rookMoves : List ( List Int, List Int )
 rookMoves = [([1..8],repeat 8 0),
              (reverse [(-8)..(-1)],repeat 8 0),
              (repeat 8 0,[1..8]),
              (repeat 8 0, reverse [(-8)..(-1)])]
 
 {-| Sequences of relative figure positions for bishop moves. -}
-bishopMoves : [([Int],[Int])]
+bishopMoves : List ( List Int, List Int )
 bishopMoves = [([1..8],[1..8]),
                (reverse [(-8)..(-1)],[1..8]),
                ([1..8],reverse [(-8)..(-1)]),
                (reverse [(-8)..(-1)],reverse [(-8)..(-1)])]
 
 {-| Sequences of relative figure positions for queen moves. -}
-queenMoves : [([Int],[Int])]
+queenMoves : List ( List Int, List Int )
 queenMoves = rookMoves ++ bishopMoves
 
 {-| Sequences of relative figure positions for knight moves. -}
-knightMoves : [([Int],[Int])]
+knightMoves : List ( List Int, List Int )
 knightMoves = [([1],[2]),
                ([2],[1]),
                ([-1],[2]),
@@ -35,13 +35,13 @@ knightMoves = [([1],[2]),
                ([-2],[1])]
 
 {-| Sequences of relative figure positions for king moves. -}
-kingMoves : [([Int],[Int])]
+kingMoves : List ( List Int, List Int )
 kingMoves = map (\(c,r) -> (take 1 c, take 1 r)) queenMoves
 
 {-| Choose the sequences of relative figure positions
 based on the figure position, type, color,
 and whether the move is a capture move or not. -}
-chooseFigureMoves : Figure -> Field -> Bool -> [([Int],[Int])]
+chooseFigureMoves : Figure -> Field -> Bool -> List ( List Int, List Int )
 chooseFigureMoves {figureType,figureColor} {row} capture =
   if | figureType == Rook -> rookMoves
      | figureType == Bishop -> bishopMoves
@@ -62,14 +62,14 @@ relativeField {col,row} (c,r) = { col = col+c, row = row+r }
 
 {-| Returns fields relative to the given field according to
 the sequence of relative coordinates. -}
-relativeFields : Field -> ([Int],[Int]) -> [Field]
+relativeFields : Field -> (List Int, List Int) -> List Field
 relativeFields field (cols,rows) =
   takeWhile isValid (map (relativeField field) (zip cols rows))
 
 {-| Returns possible figure moves.
 The figure is on the field 'field' and the 'capture' flag indicate whether
 the move is a capture. -}
-figureMoves : Figure -> Field -> Bool -> [[Field]]
+figureMoves : Figure -> Field -> Bool -> List (List Field)
 figureMoves figure field capture = map (relativeFields field) <| chooseFigureMoves figure field capture
 
 {--
