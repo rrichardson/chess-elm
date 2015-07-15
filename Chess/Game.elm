@@ -2,7 +2,6 @@ module Chess.Game ( Game(..), gameMoves, showGameHist, gameMessage, defendedDest
 
 import String
 import Dict
-import Maybe exposing (isNothing)
 import Chess.Color exposing (..)
 import Chess.Figure exposing (..)
 import Chess.Field exposing (..)
@@ -12,11 +11,13 @@ import Chess.FigureMoves exposing (..)
 import Chess.Board exposing (Board,startingBoard,updateBoard,showBoard,showMove)
 import Chess.Util exposing (..)
 import Chess.Color
-type Color = Chess.Color.Color
+import List exposing (foldr, concatMap, filter, take, any, sort, all, concat, map)
+{-import Maybe exposing (map) -}
+type alias Color = Chess.Color.Color
 
-data Game = GameStart | OngoingGame Color Board [Game] Move
+type Game = GameStart | OngoingGame Color Board (List Game) Move
 
-gameMoves : Game -> [String]
+gameMoves : Game -> (List String)
 gameMoves game = (game::(gameHist game)) >>= \g ->
   case g of
     GameStart -> []
@@ -26,7 +27,7 @@ showGameHist : Game -> String
 showGameHist game =
   let moves = gameMoves game
       separator num = if num % 2 == 0 then " " else "\n"
-      moveNumber num = if num % 2 == 0 then String.concat [String.padLeft 3 ' ' (show (1 + num // 2)),". "] else ""
+      moveNumber num = if num % 2 == 0 then String.concat [String.padLeft 3 ' ' (toString (1 + num // 2)),". "] else ""
       step move (num,str) = (num+1, String.concat [str, moveNumber num, move, separator num])
       (num,str) = foldr step (0,"") moves
   in
@@ -59,17 +60,17 @@ gameBoard game = case game of
 isFieldEmpty game field = not (Dict.member (showField field) (gameBoard game))
 
 {-| Returns free fields onto which the figure may be moved. -}
-freeDestinations : Game -> [[Field]] -> [Field]
+freeDestinations : Game -> List (List Field) -> List Field
 freeDestinations game fieldss =
   concatMap (\fields -> takeWhile (isFieldEmpty game) fields) fieldss
 
 {-| Returns fields occupied by the enemy figures
 (including the case when that figure is the King)
 onto which the figure may be moved. -}
-captureDestinations : Game -> [[Field]] -> [Field]
+captureDestinations : Game -> List (List Field) -> List Field
 captureDestinations game =
   let hasEnemyFigure field =
-        (mapMaybe .figureColor (Dict.get (showField field) (gameBoard game))) == (Just <| other (gameColor game))
+        (Maybe.map .figureColor (Dict.get (showField field) (gameBoard game))) == (Just <| other (gameColor game))
   in
     concatMap <| filter hasEnemyFigure <<
                  take 1 <<
@@ -78,10 +79,10 @@ captureDestinations game =
 {-| Returns fields occupied by the enemy figures
 (including the case when that figure is the King)
 onto which the figure may be moved. -}
-defendedDestinations : Game -> [[Field]] -> [Field]
+defendedDestinations : Game -> List (List Field) -> List Field
 defendedDestinations game =
   let hasSameColorFigure field =
-        (mapMaybe .figureColor (Dict.get (showField field) (gameBoard game))) == Just (gameColor game)
+        (Maybe.map .figureColor (Dict.get (showField field) (gameBoard game))) == Just (gameColor game)
   in
     concatMap <| filter hasSameColorFigure <<
                  take 1 <<
@@ -160,7 +161,7 @@ isEnPassantCapture game from to = case game of
 -- called en passant capture, which consists of moving the Pawn forward and left
 -- or right onto a free field which has been passed-by by an enemy Pawn in the
 -- previous move.
-nextGames : Game -> [Game]
+nextGames : Game -> List Game
 nextGames game =
     filter (\(_,{figureColor}) -> figureColor == gameColor game) (Dict.toList <| gameBoard game) >>= \(fromStr,fig) ->
     let figType = .figureType fig
@@ -191,14 +192,14 @@ nextGames game =
 
 
 {-| Filters out the next games in which the king is under check. -}
-validGames : Game -> [Game]
+validGames : Game -> List Game
 validGames game = filter (not << isOtherKingUnderCheck) <| nextGames game
 
 {-| Returns a list of valid promotion figures. -}
-validPromotionsMoves : Game -> Field -> Field -> [Figure]
+validPromotionsMoves : Game -> Field -> Field -> List Figure
 validPromotionsMoves game from to =
   if isLastRow to (gameColor game) &&
-     mapMaybe .figureType (Dict.get (showField from) (gameBoard game)) == Just Pawn
+     Maybe.map .figureType (Dict.get (showField from) (gameBoard game)) == Just Pawn
   then validGames game >>= \nextGame ->
        case nextGame of
          OngoingGame _ _ _ (PromotionMove f t fig) -> if f == from && t == to then [fig] else []
@@ -228,6 +229,9 @@ winner game =
   if (isGameFinished game && isKingUnderCheck game)
   then Just << other << gameColor <| game
   else Nothing
+
+isNothing a = if a == Maybe.Nothing then True else False
+
 
 {-| Returns a new game state after moving a figure. If the given
 move is not possible, it returns Nothing. -}

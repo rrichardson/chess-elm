@@ -4,6 +4,9 @@ import Chess.Color exposing (..)
 import Chess.Figure exposing (..)
 import Chess.Field exposing (..)
 import Chess.Util exposing (takeWhile)
+import List exposing (map, map2, reverse, take, repeat)
+
+zip = List.map2 (,)
 
 {-| Sequences of relative figure positions for rook moves. -}
 rookMoves : List ( List Int, List Int )

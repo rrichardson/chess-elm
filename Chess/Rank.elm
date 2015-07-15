@@ -9,7 +9,8 @@ import Chess.FigureMoves exposing (..)
 import Chess.Game exposing (..)
 import Chess.Util exposing (..)
 import Chess.Color
-type Color = Chess.Color.Color
+import List exposing (length, filter, map, sum)
+type alias Color = Chess.Color.Color
 
 {-| Returns the rank of a figure of the given type. -}
 figureRank : Figure -> Int

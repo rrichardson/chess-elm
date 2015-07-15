@@ -9,9 +9,10 @@ import Chess.FigureMoves exposing (..)
 import Chess.Game exposing (..)
 import Chess.Rank exposing (..)
 import Chess.Util exposing (..)
+import List exposing (map, isEmpty, sortBy, head)
 
 {-| Returns a sequence of the best ranked moves.-}
-moves : Game -> [Game]
+moves : Game -> List Game
 moves game =
   let moves = validGames game
   in if isEmpty moves
